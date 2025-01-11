@@ -9,8 +9,8 @@
 
 %}
 
+%define parse.error verbose
 %parse-param { struct schema_parser *schema_parser }
-%error-verbose
 
 %union
 {
@@ -117,7 +117,7 @@ Enum:
                                                                 YYERROR;
                                                             }
                                                         }
-    
+
     |    ENUM STRING COLON STRING BLOCK                 {
                                                             int rc;
                                                             schema_parser->schema_enum = schema_enum_create();
@@ -146,7 +146,7 @@ Enum:
                                                                 YYERROR;
                                                             }
                                                         }
-    
+
     ;
 
 EnumEntries:
@@ -174,7 +174,7 @@ EnumEntry:
                                                             }
                                                             free($1);
                                                         }
-    
+
     |    STRING EQUAL STRING                            {
                                                             int rc;
                                                             schema_parser->schema_enum_field = schema_enum_field_create();
@@ -411,5 +411,5 @@ int yyerror (struct schema_parser *schema_parser, char *s)
 {
     (void) schema_parser;
     printf("yyerror : %s\n", s);
-    return 0;  
+    return 0;
 }

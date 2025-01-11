@@ -325,7 +325,7 @@ int main (int argc, char *argv[])
         }
         schema_destroy(schema);
 
-out:     return 0;
+out:    return 0;
 bail:   if (output_file != NULL &&
             output_file != stdout &&
             output_file != stderr) {
