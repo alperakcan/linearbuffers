@@ -28,14 +28,15 @@
 
 static const struct {
         const char *name;
+        const char *NAME;
         uint64_t value;
         uint64_t size;
 } schema_count_types[] = {
-        [schema_count_type_default] = { "uint64", schema_count_type_uint64, sizeof(uint64_t) },
-        [schema_count_type_uint8]   = { "uint8" , schema_count_type_uint8 , sizeof(uint8_t)  },
-        [schema_count_type_uint16]  = { "uint16", schema_count_type_uint16, sizeof(uint16_t) },
-        [schema_count_type_uint32]  = { "uint32", schema_count_type_uint32, sizeof(uint32_t) },
-        [schema_count_type_uint64]  = { "uint64", schema_count_type_uint64, sizeof(uint64_t) }
+        [schema_count_type_default] = { "uint64", "UINT64", schema_count_type_uint64, sizeof(uint64_t) },
+        [schema_count_type_uint8]   = { "uint8" , "UINT8" , schema_count_type_uint8 , sizeof(uint8_t)  },
+        [schema_count_type_uint16]  = { "uint16", "UINT16", schema_count_type_uint16, sizeof(uint16_t) },
+        [schema_count_type_uint32]  = { "uint32", "UINT32", schema_count_type_uint32, sizeof(uint32_t) },
+        [schema_count_type_uint64]  = { "uint64", "UINT64", schema_count_type_uint64, sizeof(uint64_t) }
 };
 
 const char * schema_count_type_name (uint32_t type)
@@ -44,6 +45,17 @@ const char * schema_count_type_name (uint32_t type)
         for (i = 0; i < sizeof(schema_count_types) / sizeof(schema_count_types[0]); i++) {
                 if (type == schema_count_types[i].value) {
                         return schema_count_types[i].name;
+                }
+        }
+        return "default";
+}
+
+const char * schema_count_type_NAME (uint32_t type)
+{
+        uint64_t i;
+        for (i = 0; i < sizeof(schema_count_types) / sizeof(schema_count_types[0]); i++) {
+                if (type == schema_count_types[i].value) {
+                        return schema_count_types[i].NAME;
                 }
         }
         return "default";
@@ -70,14 +82,15 @@ uint64_t schema_count_type_size (uint32_t type)
 
 static const struct {
         const char *name;
+        const char *NAME;
         uint64_t value;
         uint64_t size;
 } schema_offset_types[] = {
-        [schema_offset_type_default] = { "uint64", schema_offset_type_uint64, sizeof(uint64_t) },
-        [schema_offset_type_uint8]   = { "uint8" , schema_offset_type_uint8 , sizeof(uint8_t)  },
-        [schema_offset_type_uint16]  = { "uint16", schema_offset_type_uint16, sizeof(uint16_t) },
-        [schema_offset_type_uint32]  = { "uint32", schema_offset_type_uint32, sizeof(uint32_t) },
-        [schema_offset_type_uint64]  = { "uint64", schema_offset_type_uint64, sizeof(uint64_t) }
+        [schema_offset_type_default] = { "uint64", "UINT64", schema_offset_type_uint64, sizeof(uint64_t) },
+        [schema_offset_type_uint8]   = { "uint8" , "UINT8" , schema_offset_type_uint8 , sizeof(uint8_t)  },
+        [schema_offset_type_uint16]  = { "uint16", "UINT16", schema_offset_type_uint16, sizeof(uint16_t) },
+        [schema_offset_type_uint32]  = { "uint32", "UINT32", schema_offset_type_uint32, sizeof(uint32_t) },
+        [schema_offset_type_uint64]  = { "uint64", "UINT64", schema_offset_type_uint64, sizeof(uint64_t) }
 };
 
 const char * schema_offset_type_name (uint32_t type)
@@ -86,6 +99,17 @@ const char * schema_offset_type_name (uint32_t type)
         for (i = 0; i < sizeof(schema_offset_types) / sizeof(schema_offset_types[0]); i++) {
                 if (type == schema_offset_types[i].value) {
                         return schema_offset_types[i].name;
+                }
+        }
+        return "default";
+}
+
+const char * schema_offset_type_NAME (uint32_t type)
+{
+        uint64_t i;
+        for (i = 0; i < sizeof(schema_offset_types) / sizeof(schema_offset_types[0]); i++) {
+                if (type == schema_offset_types[i].value) {
+                        return schema_offset_types[i].NAME;
                 }
         }
         return "default";

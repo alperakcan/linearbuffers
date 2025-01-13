@@ -77,9 +77,11 @@ int schema_type_is_valid (struct schema *schema, const char *type);
 int schema_value_is_scalar (const char *value);
 
 const char * schema_count_type_name (uint32_t type);
+const char * schema_count_type_NAME (uint32_t type);
 uint32_t schema_count_type_value (const char *type);
 uint64_t schema_count_type_size (uint32_t type);
 
 const char * schema_offset_type_name (uint32_t type);
+const char * schema_offset_type_NAME (uint32_t type);
 uint32_t schema_offset_type_value (const char *type);
 uint64_t schema_offset_type_size (uint32_t type);

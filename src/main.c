@@ -19,6 +19,7 @@
 #define OPTION_DECODER                  'd'
 #define OPTION_DECODER_USE_MEMCPY       'm'
 #define OPTION_JSONIFY                  'j'
+#define OPTION_NAMESPACE                'n'
 
 #define DEFAULT_SCHEMA                  NULL
 #define DEFAULT_OUTPUT                  NULL
@@ -29,6 +30,7 @@
 #define DEFAULT_DECODER                 0
 #define DEFAULT_DECODER_USE_MEMCPY      0
 #define DEFAULT_JSONIFY                 0
+#define DEFAULT_NAMESPACE               NULL
 
 int schema_generate_pretty (struct schema *schema, FILE *fp);
 
@@ -92,6 +94,7 @@ static void print_help (const char *name)
         fprintf(stdout, "  -d, --decoder  : generate decoder (values: { 0, 1 }, default: %d)\n", DEFAULT_DECODER);
         fprintf(stdout, "  -m, --decoder-use-memcpy: decode using memcpy, rather than casting (values: { 0, 1 }, default: %d)\n", DEFAULT_DECODER_USE_MEMCPY);
         fprintf(stdout, "  -j, --jsonify  : generate jsonify (values: { 0, 1 }, default: %d)\n", DEFAULT_JSONIFY);
+        fprintf(stdout, "  -n, --namespace: namespace (default: %s)\n", (DEFAULT_NAMESPACE == NULL) ? "(null)" : DEFAULT_NAMESPACE);
         fprintf(stdout, "  -h, --help     : this text\n");
 }
 
@@ -112,6 +115,7 @@ int main (int argc, char *argv[])
         int option_decoder;
         int option_decoder_use_memcpy;
         int option_jsonify;
+        const char *option_namespace;
 
         int rc;
         struct schema *schema;
@@ -128,9 +132,10 @@ int main (int argc, char *argv[])
         option_decoder                  = DEFAULT_DECODER;
         option_decoder_use_memcpy       = DEFAULT_DECODER_USE_MEMCPY;
         option_jsonify                  = DEFAULT_JSONIFY;
+        option_namespace                = DEFAULT_NAMESPACE;
 
         while (1) {
-                c = getopt_long(argc, argv, "s:o:p:l:e:i:d:m:j:h", options, &option_index);
+                c = getopt_long(argc, argv, "s:o:p:l:e:i:d:m:j:n:h", options, &option_index);
                 if (c == -1) {
                         break;
                 }
@@ -237,6 +242,9 @@ int main (int argc, char *argv[])
                                         option_jsonify = !!atoi(optarg);
                                 }
                                 break;
+                        case OPTION_NAMESPACE:
+                                option_namespace = optarg;
+                                break;
                 }
         }
 
@@ -274,6 +282,13 @@ int main (int argc, char *argv[])
         if (schema == NULL) {
                 fprintf(stderr, "can not read schema file: %s\n", option_schema);
                 goto bail;
+        }
+        if (option_namespace != NULL) {
+                rc = schema_set_namespace(schema, option_namespace);
+                if (rc != 0) {
+                        fprintf(stderr, "can not set schema namespace: %s\n", option_namespace);
+                        goto bail;
+                }
         }
 
         if (strcmp(option_output, "stdout") == 0) {
