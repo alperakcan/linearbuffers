@@ -2120,7 +2120,7 @@ static int schema_generate_jsonify_table (struct schema *schema, struct schema_t
 bail:   return -1;
 }
 
-int schema_generate_c_jsonify (struct schema *schema, FILE *fp, int decoder_use_memcpy)
+int schema_generate_c_jsonify (struct schema *schema, FILE *fp)
 {
         int rc;
 
@@ -2138,12 +2138,6 @@ int schema_generate_c_jsonify (struct schema *schema, FILE *fp, int decoder_use_
         }
         if (fp == NULL) {
                 linearbuffers_errorf("fp is invalid");
-                goto bail;
-        }
-
-        rc = schema_generate_c_decoder(schema, fp, decoder_use_memcpy);
-        if (rc != 0) {
-                linearbuffers_errorf("can not generate decoder for schema");
                 goto bail;
         }
 

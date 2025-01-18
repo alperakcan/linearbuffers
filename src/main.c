@@ -36,17 +36,17 @@ int schema_generate_pretty (struct schema *schema, FILE *fp);
 
 int schema_generate_c_encoder (struct schema *schema, FILE *fp, int encoder_include_library);
 int schema_generate_c_decoder (struct schema *schema, FILE *fp, int decoder_use_memcpy);
-int schema_generate_c_jsonify (struct schema *schema, FILE *fp, int decoder_use_memcpy);
+int schema_generate_c_jsonify (struct schema *schema, FILE *fp);
 
 int schema_generate_js_encoder (struct schema *schema, FILE *fp, int encoder_include_library);
 int schema_generate_js_decoder (struct schema *schema, FILE *fp, int decoder_use_memcpy);
-int schema_generate_js_jsonify (struct schema *schema, FILE *fp, int decoder_use_memcpy);
+int schema_generate_js_jsonify (struct schema *schema, FILE *fp);
 
 struct generator {
         const char *language;
         int (*encoder) (struct schema *schema, FILE *fp, int encoder_include_library);
         int (*decoder) (struct schema *schema, FILE *fp, int decoder_use_memcpy);
-        int (*jsonify) (struct schema *schema, FILE *fp, int decoder_use_memcpy);
+        int (*jsonify) (struct schema *schema, FILE *fp);
 
 };
 
@@ -326,7 +326,14 @@ int main (int argc, char *argv[])
                 }
         }
         if (option_jsonify) {
-                rc = (*generator)->jsonify(schema, output_file, option_decoder_use_memcpy);
+                if (!option_decoder) {
+                        rc = (*generator)->decoder(schema, output_file, option_decoder_use_memcpy);
+                        if (rc != 0) {
+                                fprintf(stderr, "can not generate decoder file: %s\n", option_output);
+                                goto bail;
+                        }
+                }
+                rc = (*generator)->jsonify(schema, output_file);
                 if (rc != 0) {
                         fprintf(stderr, "can not generate jsonify file: %s\n", option_output);
                         goto bail;

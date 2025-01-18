@@ -105,7 +105,7 @@ static int schema_generate_enum (struct schema *schema, struct schema_enum *anum
                 linearbuffers_errorf("fp is invalid");
                 goto bail;
         }
-        
+
         fprintf(fp, "\n");
         TAILQ_FOREACH(anum_field, &anum->fields, list) {
                 if (anum_field->value == NULL) {
@@ -1624,7 +1624,7 @@ static int schema_generate_jsonify_table (struct schema *schema, struct schema_t
 bail:   return -1;
 }
 
-int schema_generate_js_jsonify (struct schema *schema, FILE *fp, int decoder_use_memcpy)
+int schema_generate_js_jsonify (struct schema *schema, FILE *fp)
 {
         int rc;
 
@@ -1642,12 +1642,6 @@ int schema_generate_js_jsonify (struct schema *schema, FILE *fp, int decoder_use
         }
         if (fp == NULL) {
                 linearbuffers_errorf("fp is invalid");
-                goto bail;
-        }
-
-        rc = schema_generate_js_decoder(schema, fp, decoder_use_memcpy);
-        if (rc != 0) {
-                linearbuffers_errorf("can not generate decoder for schema");
                 goto bail;
         }
 
